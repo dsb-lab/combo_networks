@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="#"> <!-- fixes some console.log error -->
+
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/skeleton.css" />
+  <link rel="stylesheet" href="css/font-awesome.css" />
+  <link rel="stylesheet" href="css/open-sans.css" />
+  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="css/tooltipster.bundle.min.css" />
+
+  <script src="js/cytoscape.min.js"></script>
+  <script src="js/cola.js"></script>
+  <script src="js/cytoscape-cola.js"></script>
+  <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="js/tooltipster.bundle.min.js"></script>
+  <script src="js/index.js"></script>
+  <script src="js/cytoscape-svg.js"></script>
+  <script src="js/FileSaver.js"></script>
+
+  <script>
+    var saveAsSvg = function(filename) {
+        var svgContent = cy.svg({scale: 0.1, full: true, bg: 'white',display:'block'});
+        var blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+        saveAs(blob, "demo.svg");
+      };
+    var getSvgUrl = function() {
+        var svgContent = cy.svg({scale: 0.1, full: true, bg: 'white',display:'block'});
+        var blob = new Blob([svgContent], {type:"image/svg+xml;charset=utf-8"});
+        var url = URL.createObjectURL(blob);
+        return url;
+      };
+  </script>
+
+  <title>Network Pathways</title>
+</head>
+
+<body>
+  <div id="cy" class="main">
+    <button style="color: white; background-color: #008CBA; width: 100px; height: 30px; text-align: center; padding: 0px; line-height: 0.5;" onclick="saveAsSvg()">Save as SVG</button>
+    <button style="color: white; background-color: #ff0000; width: 100px; height: 30px; text-align: center; padding: 0px; line-height: 0.5;" onclick="window.location=getSvgUrl()">View SVG</button>
+  </div>
+
+  <div class="tools">
+    <h2>Data</h2>
+
+    <p>Choose which subset to display, including Healthy Controls and MS Patients. Each option shows the top pathways for that subset.</p>
+
+    <label for="data" class="tooltip u-pull-left" title="Switch to a new dataset">Active dataset</label>
+    <div class="u-cf"></div>
+    <select class id="data">
+        <option value="network_comboGRN_pats.json">All MS Patients</option>
+        <option value="network_combo_pats.json">All MS Patients: No Hierarchy</option>
+        <option value="network_comboGRN_mild.json">Mild MS Patients</option>
+        <option value="network_comboGRN_severe.json">Severe MS Patients</option>
+        <option value="network_comboGRN_pms.json">Progressive MS</option>
+        <option value="network_comboGRN_rms.json">Relapse-Remitting MS</option>
+        <option value="network_comboGRN_notreat.json">Untreated</option>
+        <option value="network_comboGRN_first.json">Low-Efficacy Treatment</option>
+        <option value="network_comboGRN_second.json">High-Efficacy Treatment</option>
+      </select>
+
+    <p></p>
+    <label for="style" class="tooltip u-pull-left" title="Switch to a new graph stylesheet">Active stylesheet</label>
+    <div class="u-cf"></div>
+    <select id="style">
+        <option value="custom.json" selected>Custom</option>
+      </select>
+
+    <p></p>
+    <label for="layout" class="tooltip u-pull-left" title="Change layout">Active layout</label>
+    <div class="u-cf"></div>
+    <select id="layout">
+        <option value="custom" selected>Custom</option>
+      </select>
+    <i id="redo-layout" class="fa fa-refresh action-icon tooltip" title="Redo layout"></i>
+
+    <p></p>
+    <label for="algorithm" class="tooltip u-pull-left" title="Run algorithm. Try running A* a few times to see distances to different nodes">
+        Run algorithm
+      </label>
+    <div class="u-cf"></div>
+    <select id="algorithm">
+        <option value="none" selected>None</option>
+      </select>
+    <i id="redo-algorithm" class="fa fa-refresh action-icon tooltip" title="Redo algorithm visualization"></i>
+
+  <div class="footer-link">
+    <a target="_blank" href="http://js.cytoscape.org">js.cytoscape.org</a>
+  </div>
+</body>
+
+</html>
